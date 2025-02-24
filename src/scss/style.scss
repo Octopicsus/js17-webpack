@@ -28,6 +28,7 @@ html {
 body {
     padding: 0;
     margin : 0;
+   background-color: rgb(245, 245, 245);
 }
 
 nav {
@@ -240,4 +241,8 @@ footer {
     background-image   : url('../img/loader.gif');
     background-repeat  : no-repeat;
     background-position: center;
+}
+
+.test{
+    background-color: red;
 }

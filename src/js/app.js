@@ -1,4 +1,6 @@
 import { template } from "./data.js";
+import "../scss/style.scss";
+
 
 const root = document.getElementById("root");
 
@@ -109,7 +111,6 @@ async function showPopup(item, type) {
       const detailElement = createDetailElement(label, value);
       popup.appendChild(detailElement);
     });
-    popup.querySelector(".loading").remove();
   } catch (error) {
     console.log(`Popup Error: ${error}`);
   }
@@ -210,7 +211,7 @@ function showFooter() {
 
 document.addEventListener("DOMContentLoaded", () => {
   let currentResponseApi;
-
+  console.log(currentResponseApi);
   showLoader();
 
   showNavigation();
