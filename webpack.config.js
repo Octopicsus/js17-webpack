@@ -1,5 +1,7 @@
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import path, { resolve } from "path";
 import { fileURLToPath } from "url";
 
@@ -44,7 +46,11 @@ export default {
       },
       {
         test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [
+          isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
       },
       {
         test: /\.(png|gif|svg)$/,
@@ -79,7 +85,18 @@ export default {
       title: "Star Wars | - Webpack",
       favicon: "./src/img/favicon.ico",
     }),
+    ...(isProduction
+      ? [
+          new MiniCssExtractPlugin({
+            filename: "styles.[contenthash].css",
+          }),
+        ]
+      : []),
   ],
+  optimization: {
+    minimize: isProduction,
+    minimizer: [`...`, new CssMinimizerPlugin()],
+  },
   devServer: {
     static: path.resolve(__dirname, "build"),
     hot: true,
