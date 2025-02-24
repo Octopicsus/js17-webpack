@@ -23,14 +23,51 @@ export default {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: "> 0.25%, not dead",
+                  useBuiltIns: "usage",
+                  corejs: 3,
+                },
+              ],
+            ],
+            cacheDirectory: true,
+          },
+        },
+      },
+      {
         test: /\.scss$/,
         use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
-        test: /\.(woff|woff2|ttf|png|gif|svg)$/,
+        test: /\.(png|gif|svg)$/,
+        type: "asset/resource",
+        use: [
+          {
+            loader: "image-webpack-loader",
+            options: {
+              mozjpeg: { quality: 75 },
+              optipng: { enabled: true },
+              svgo: { cleanupIDs: true },
+            },
+          },
+        ],
+        generator: {
+          filename: "assets/[name][ext]",
+        },
+      },
+      {
+        test: /\.(woff|woff2|ttf)$/,
         type: "asset/resource",
         generator: {
-          filename: "assets/[name][ext]", 
+          filename: "assets/[name][ext]",
         },
       },
     ],
@@ -38,10 +75,10 @@ export default {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index.ejs',
-      title: 'Star Wars | - Webpack',
-      favicon: './src/img/favicon.ico'
-    })
+      template: "./src/index.ejs",
+      title: "Star Wars | - Webpack",
+      favicon: "./src/img/favicon.ico",
+    }),
   ],
   devServer: {
     static: path.resolve(__dirname, "build"),
