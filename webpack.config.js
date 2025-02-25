@@ -2,6 +2,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
+import ESLintPlugin from "eslint-webpack-plugin"; 
 import path, { resolve } from "path";
 import { fileURLToPath } from "url";
 
@@ -27,22 +28,24 @@ export default {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: [
-              [
-                "@babel/preset-env",
-                {
-                  targets: "> 0.25%, not dead",
-                  useBuiltIns: "usage",
-                  corejs: 3,
-                },
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: [
+                [
+                  "@babel/preset-env",
+                  {
+                    targets: "> 0.25%, not dead",
+                    useBuiltIns: "usage",
+                    corejs: 3,
+                  },
+                ],
               ],
-            ],
-            cacheDirectory: true,
+              cacheDirectory: true,
+            },
           },
-        },
+        ],
       },
       {
         test: /\.scss$/,
@@ -84,6 +87,9 @@ export default {
       template: "./src/index.ejs",
       title: "Star Wars | - Webpack",
       favicon: "./src/img/favicon.ico",
+    }),
+    new ESLintPlugin({
+      fix: true, 
     }),
     ...(isProduction
       ? [
