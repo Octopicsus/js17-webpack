@@ -109,7 +109,7 @@ export default {
     hot: true,
     liveReload: true,
     compress: true,
-    port: 8080,
+    port: 3000,
     open: true,
   },
 };
